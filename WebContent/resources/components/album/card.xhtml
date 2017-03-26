@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"      
+      xmlns:composite="http://java.sun.com/jsf/composite">
+      
+<composite:interface>
+	<composite:attribute name="album"/>  	
+	<composite:attribute name="update"/>
+	<composite:attribute name="menu"/>
+	<composite:attribute name="select"/>
+	<composite:attribute name="preview"/>
+	<composite:attribute name="previewdialog"/>
+</composite:interface>
+
+<composite:implementation>
+	<h:panelGroup rendered="#{cc.attrs.album==null}" id="new">
+		<div class="album card new" onclick="javascript:$('#album_create').fadeToggle(200);"/>
+		<div style="display:none;" id="album_create">			
+			<h:form id="create_album">
+				<div class="large-8 columns">
+				 	<h:inputText value="#{albumcontroller.album.name}" id="album_name"/>
+				 	<p:watermark value="#{dictionary.album_new_name}" for="album_name"/>
+				</div>
+				<div class="large-4 columns">
+					<h:commandButton action="#{albumcontroller.create}" value="#{dictionary.album_create_action}" styleClass="button">
+						<f:ajax execute="@form" render="#{cc.attrs.update} new"/>
+					</h:commandButton>
+				</div>
+			</h:form>
+		</div>		
+	</h:panelGroup>	
+	<h:panelGroup rendered="#{cc.attrs.album!=null and cc.attrs.select}" id="album_card_select">
+		<div class="album container">				
+    	 <p>#{cc.attrs.album.name} #{cc.attrs.album.size}</p>    	     	 
+    	 <div class="overlay #{(cc.attrs.selectModel[cc.attrs.album.id] and cc.attrs.select)?'selected':''}" onclick="$('.select_#{cc.attrs.album.id}').click();" id="select_#{cc.attrs.album.id}"/>
+    	 <h:selectBooleanCheckbox value="#{cc.attrs.selectModel[cc.attrs.album.id]}" styleClass="select_#{cc.attrs.album.id}" style="display:none" autocomplete="off" >
+    		<f:ajax render="#{cc.attrs.menu} album_card_select" execute="@form" event="change"/>
+    	 </h:selectBooleanCheckbox>    	 
+    	</div>		    	    	
+	</h:panelGroup>
+	<h:panelGroup rendered="#{cc.attrs.album!=null and !cc.attrs.select}" id="album_card_preview">
+		<div class="album container">				
+    	 <p>#{cc.attrs.album.name} #{cc.attrs.album.media.size()}</p>    	     	 
+    	 <div class="overlay" id="select_#{cc.attrs.album.id}" onclick="location.href='album.xhtml?album=#{cc.attrs.album.id}'"/>    	 				
+    	</div>		    	    	
+	</h:panelGroup>
+</composite:implementation>
+</html>

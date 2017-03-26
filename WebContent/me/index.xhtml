@@ -1,0 +1,109 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:user="http://java.sun.com/jsf/composite/components/user"
+	xmlns:album="http://java.sun.com/jsf/composite/components/album"
+	xmlns:media="http://java.sun.com/jsf/composite/components/media"
+	xmlns:controller="http://java.sun.com/jsf/composite/components/controller"        
+	xmlns:p="http://primefaces.org/ui"      
+	template="/template/layout.xhtml">
+
+	<ui:define name="head">			
+	</ui:define>
+
+	<ui:define name="body">
+		<div class="row sep-top">
+			<div class="large-4 columns">
+				<user:card user="#{authcontroller.user}"/>
+			</div>							
+			<div class="large-8 columns right hide-for-small">
+				<h2 class="right">#{dictionary.portal_welcome_header}</h2>
+			</div>			
+		</div>
+		<hr class="sep-top"/>
+		<div class="row">
+			<div class="large-5 small-12 columns">
+				<div class="large-12 columns">
+				<h3>#{dictionary.portal_albums_header}</h3>										
+				<album:card id="album_new" update="album_panel"/>						
+				</div>
+				<div class="large-12 columns sep-top">	
+					<h:form id="album_panel">
+						<h:panelGroup id="album_menu">
+							<album:menu
+										groupSelectEnabled="#{albumcontroller.selectMode}"
+										groupSelectModel="#{albumcontroller.selected}"
+										itemSelectEnabled="#{mediacontroller.selectMode}"
+										itemSelectModel="#{mediacontroller.selected}"
+										update=":media_panel :album_panel"
+										block=":album_panel"/>
+										
+							<div class="selectswitch">
+							 	<div>#{dictionary.select_mode}</div> 
+							 	 <p:selectBooleanCheckbox value="#{albumcontroller.selectMode}" id="album_select_controller">
+							 		<p:ajax update="album_panel" listener="#{albumcontroller.onSelectModeChanged}"/>
+							 	</p:selectBooleanCheckbox>
+							 </div>			
+						</h:panelGroup>				
+						<controller:controller 	request="#{albumcontroller.albumListRequest}" 
+														model="#{albumcontroller.userAlbumList}"
+														total="#{albumcontroller.userAlbumList.total}"
+														update="album_panel" 
+														/>
+						<div id="albums">					
+							<ui:repeat var="album" value="#{albumcontroller.userAlbumList.results}" varStatus="status" >
+								<album:card id="album_#{status.index}" 
+											album="#{album}" 
+											selectModel="#{albumcontroller.selected}"
+											select="#{albumcontroller.selectMode}" 											
+											menu=":album_panel:album_menu :media_panel:media_menu"/>											
+							</ui:repeat>					
+						</div>							
+					</h:form>								
+				</div>				
+			</div>		
+			<hr class="hide-for-large" style="padding-top: 2em"/>			
+			<div class="large-7 small-12 columns">				
+				<div class="large-12 columns">
+					<h3>#{dictionary.portal_media_header}</h3>						
+					<media:card id="media_new" update="media_panel"/>									
+				</div>										
+				<div class="large-12 columns sep-top">			
+					<h:form id="media_panel">		
+						<h:panelGroup id="media_menu">
+							<media:menu 								
+								groupSelectModel="#{albumcontroller.selected}"
+								groupSelectEnabled="#{albumcontroller.selectMode}"
+								itemSelectModel="#{mediacontroller.selected}"
+								itemSelectEnabled="#{mediacontroller.selectMode}"
+								update=":media_panel :album_panel"
+								block=":media_panel"/>
+							 <div class="selectswitch">
+							 	<div>#{dictionary.select_mode}</div> 
+							 	 <p:selectBooleanCheckbox value="#{mediacontroller.selectMode}" id="media_select_mode">
+							 		<p:ajax update="media_panel" listener="#{mediacontroller.onSelectModeChanged}"/>
+							 	</p:selectBooleanCheckbox>
+							 </div>							 
+						</h:panelGroup>						
+						<controller:controller 	request="#{mediacontroller.mediaListRequest}" 
+												model="#{mediacontroller.userMediaList}"
+												total="#{mediacontroller.userMediaList.total}"
+												update="media_panel" 
+												/>
+						<div id="media">														
+								<ui:repeat var="media" value="#{mediacontroller.userMediaList.results}" varStatus="status">
+									<media:card id="media" 										
+											media="#{media}" 
+											selectModel="#{mediacontroller.selected}"
+											select="#{mediacontroller.selectMode}"										
+											menu=":media_panel:media_menu"
+											previewdialog="media_preview"
+											preview=":media_preview:media"/>
+								</ui:repeat>												
+						</div>														
+					</h:form>															
+				</div>		
+			</div>		
+		</div>			
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"      
+      xmlns:composite="http://java.sun.com/jsf/composite">
+      
+<composite:interface>
+	<composite:attribute name="media"/>
+	<composite:attribute name="selectModel"/>
+	<composite:attribute name="update"/>
+	<composite:attribute name="menu"/>
+	<composite:attribute name="select"/>
+	<composite:attribute name="previewdialog"/>
+	<composite:attribute name="preview"/>
+	<composite:attribute name="share" default="false"/>	
+	<composite:attribute name="viewonly" default="false"/>
+</composite:interface>
+
+<composite:implementation>
+	<h:panelGroup rendered="#{cc.attrs.media==null}" id="new">
+		<h:outputScript name="js/sync.js"/>			
+		<div class="media card new" onclick="$('#media_upload').foundation('open');$(window).trigger('resize');"/>				
+		<div class="full reveal fade-in fade-out" style="display:none;" id="media_upload" data-reveal="true" data-events="resize">			
+			<button class="close-button" data-close="true" aria-label="#{dictionary.close}" type="button" onclick="$('#media_upload').foundation('close')">
+			  <span aria-hidden="true">&times;</span>
+			</button>
+			<h3>#{dictionary.modal_upload_header}</h3>
+			<h:form id="upload" style="margin-top: 2em;">				
+				 <p:fileUpload fileUploadListener="#{mediacontroller.handleFileUpload}" 
+				 	multiple="true" 
+				 	mode="advanced" 
+				 	allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+				 	update="#{cc.attrs.update}"
+				 	onstart="startSync('media_upload', '$(\'#media_upload\').foundation(\'close\');', '$(\'.ui-fileupload-files  tr\').length')"				 	
+				 	oncomplete="completeSync('media_upload')"						 	
+				 	/>
+			</h:form>			
+		</div>
+	</h:panelGroup>
+	
+	<h:panelGroup rendered="#{cc.attrs.media!=null and cc.attrs.select and !cc.attrs.viewonly}" id="media_image_select">
+		<div class="media container">			
+			<img src="#{cc.attrs.media.privateThumbUrl}" id="media_#{cc.attrs.media.id}" class="media card"/>
+			<div class="overlay #{cc.attrs.selectModel[cc.attrs.media.id]?'selected':''}"  onclick="$('.select_#{cc.attrs.media.id}').click();" id="select_#{cc.attrs.media.id}"/>
+		</div>			
+		<h:selectBooleanCheckbox value="#{cc.attrs.selectModel[cc.attrs.media.id]}" styleClass="select_#{cc.attrs.media.id}" style="display:none;">
+			<f:ajax render="#{cc.attrs.menu} media_image_select" execute="@form" event="change"/>
+		</h:selectBooleanCheckbox>
+	</h:panelGroup>	
+	
+	<h:panelGroup rendered="#{cc.attrs.media!=null and !cc.attrs.select and !cc.attrs.viewonly}" id="media_image_preview">
+		<div class="media container">			
+			<img src="#{cc.attrs.media.privateThumbUrl}" id="media_#{cc.attrs.media.id}" class="media card"/>
+			<div class="overlay" onclick="location.href='media.xhtml?media=#{cc.attrs.media.id}'"/>			
+		</div>
+	</h:panelGroup>
+	
+	<h:panelGroup rendered="#{cc.attrs.viewonly}">
+		<div class="media container">			
+			<h:panelGroup rendered="#{cc.attrs.share != null}">
+				<img src="#{sharecontroller.getPresignedThumbUrl(cc.attrs.media)}" id="media_view_#{cc.attrs.media.id}" class="media card"/>		
+				<div class="overlay" onclick="location.href='media.xhtml?q=#{cc.attrs.share}&amp;m=#{cc.attrs.media.id}'"/>
+			</h:panelGroup>
+			<h:panelGroup rendered="#{!cc.attrs.share == null}">
+				<img src="#{cc.attrs.media.privateThumbUrl}" id="media_view_#{cc.attrs.media.id}" class="media card"/>		
+				<div class="overlay" onclick="location.href='media.xhtml?media=#{cc.attrs.media.id}'"/>
+			</h:panelGroup>	
+		</div>	
+	</h:panelGroup>
+	
+</composite:implementation>
+</html>

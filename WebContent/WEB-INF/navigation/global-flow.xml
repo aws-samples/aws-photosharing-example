@@ -1,0 +1,25 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+version="2.0">
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-action>#{authcontroller.logout}</from-action>
+			<to-view-id>/auth/loggedout.xhtml</to-view-id>
+			<redirect></redirect>			
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/me/album.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>back</from-outcome>
+			<to-view-id>/me/index.html</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	
+</faces-config>

@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"      
+      xmlns:composite="http://java.sun.com/jsf/composite">
+      
+<composite:interface>
+	<composite:attribute name="total"/>	
+	<composite:attribute name="update"/>
+	<composite:attribute name="model"/>
+	<composite:attribute name="request"/>
+</composite:interface>
+
+<composite:implementation>	
+		<div class="row controller">
+			<div class="large-2 small-2 columns">			
+				<h:commandLink action="#{cc.attrs.model.first}"  disabled="#{!(cc.attrs.request.first &gt;= cc.attrs.request.max*2)}">										
+					<f:ajax render="#{cc.attrs.update}" execute="@form" />
+					<i class="fa fa-fw fa-arrow-circle-left"></i> 			
+				</h:commandLink>				
+			</div>
+			<div class="large-2 small-2 columns">
+				<h:commandLink action="#{cc.attrs.model.prev}" disabled="#{!(cc.attrs.request.first &gt; 0)}">
+					<f:ajax render="#{cc.attrs.update}" execute="@form"/>	
+					<i class="fa fa-fw fa-arrow-circle-o-left"></i>		
+				</h:commandLink>
+			</div>
+			<div class="large-4 small-4 columns">
+				<h:outputFormat value="#{dictionary.paginator_format}">
+					<f:param value="#{cc.attrs.request.first}"/>
+					<f:param value="#{cc.attrs.request.max}"/>
+					<f:param value="#{cc.attrs.total}"/>
+					<f:param value="#{cc.attrs.request.first / cc.attrs.request.max}"/>					
+				</h:outputFormat>			
+			</div>		
+			<div class="large-2 small-2 columns text-right">
+				<h:commandLink action="#{cc.attrs.model.next}" disabled="#{!(cc.attrs.total == null or (cc.attrs.request.first + cc.attrs.request.max &lt; cc.attrs.total))}">
+					<f:ajax render="#{cc.attrs.update}" execute="@form"/>			
+					<i class="fa fa-fw fa-arrow-circle-o-right"></i>
+				</h:commandLink>
+			</div>
+			<div class="large-2 small-2 columns text-right">
+				<h:commandLink action="#{cc.attrs.model.last}" disabled="#{!(cc.attrs.request.first &lt; cc.attrs.model.total-cc.attrs.request.max*2)}">
+					<f:ajax render="#{cc.attrs.update}" execute="@form"/>		
+					<i class="fa fa-fw fa-arrow-circle-right"></i>	
+				</h:commandLink>
+			</div>
+		</div>	
+</composite:implementation>
+</html>

@@ -1,0 +1,143 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:user="http://java.sun.com/jsf/composite/components/user"
+	xmlns:album="http://java.sun.com/jsf/composite/components/album"
+	xmlns:media="http://java.sun.com/jsf/composite/components/media"
+	xmlns:controller="http://java.sun.com/jsf/composite/components/controller"        
+	xmlns:p="http://primefaces.org/ui"      
+	template="/template/layout.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="media" value="#{mediacontroller.media.id}"/>
+		<f:event type="preRenderView" listener="#{mediacontroller.loadMedia}" />
+	</f:metadata>
+
+	<ui:define name="head">			
+	</ui:define>			
+
+	<ui:define name="body">
+		<div class="row mediapreview">			
+			<div class="large-8 columns">
+				<h2>#{dictionary.media_view}</h2>
+				<h:form id="media_preview">		
+					<div class="row mediapreview">			
+						<div class="large-12 columns">
+							<div class="large-10 columns">
+								<h:inputText id="media_name" value="#{mediacontroller.media.name}" styleClass="inline"/>
+							</div>
+							<div class="large-2 columns">
+								<h:commandLink action="#{mediacontroller.updateMedia}" value="#{dictionary.action_update}" styleClass="button small">
+									<f:ajax render="media_name" execute="media_name"/>
+								</h:commandLink>
+							</div>							
+							<img src="#{mediacontroller.media.privateUrl}" width="100%"/>
+						</div>
+					</div>	
+				</h:form>
+			</div>
+			<div class="large-4 small-12 columns">
+				<h:form id="share_media">	
+					<div class="row sep-top">
+						<div class="large-12 small-12 columns">
+							<h5>#{dictionary.album_public_shares}</h5>		
+							<h:panelGroup id="public_shares">												
+							    <div class="sep-top">												    								    					
+									<ui:repeat var="public_share" value="#{sharecontroller.getPublicShares(mediacontroller.media).results}">
+										<div class="large-9 small-10 columns">										
+											<input type="text" readonly="readonly" dir="ltr" value="#{request.requestURL.substring(0, request.requestURL.indexOf('/',8))}#{public_share.shareUrl}" class="readonly"/>										
+										</div>
+										<div class="large-3 small-2 columns">
+											<h:commandLink styleClass="fa fa-fw fa-bell-#{public_share.listed?'':'slash-'}o" action="#{sharecontroller.toggleShareVisibility(public_share.id)}" title="#{dictionary.toggle_share_visibility}">
+												<f:ajax render=":share_media:public_shares"/>
+											</h:commandLink>
+											<h:commandLink styleClass="fa fa-fw fa-ban delete" action="#{sharecontroller.deletePublicShare(public_share.id)}" title="#{dictionary.delete_share}">
+												<f:ajax render=":share_media:public_shares"/>
+											</h:commandLink>
+										</div>
+									</ui:repeat>		
+								</div>	
+								<div class="large-12 columns">							
+									<h:commandButton action="#{sharecontroller.generatePublicShareUrl(mediacontroller.media)}"
+														disabled="#{sharecontroller.getPublicShares(mediacontroller.media).total &gt;=5}" 
+														value="#{dictionary.generate_media_public_url}" styleClass="button small alert ">
+										<f:ajax render="public_shares"/>								
+									</h:commandButton>				
+								</div>		
+							</h:panelGroup>										
+						</div>	
+						<div class="large-12 columns">	
+						</div>					
+					</div>					
+					<div class="row">
+						<div class="large-12 small-12 columns">
+							<hr/>
+							<h5>#{dictionary.one_time_shares}</h5>
+							<h:panelGroup id="fleeting_shares">
+								<div class="sep-top">
+									<ui:repeat var="public_share" value="#{sharecontroller.getFleetingShares(mediacontroller.media).results}">
+										<div class="large-9 small-10 columns">
+											<input type="text" readonly="readonly" dir="ltr" value="#{request.requestURL.substring(0, request.requestURL.indexOf('/',8))}#{public_share.shareUrl}" class="readonly"/>
+										</div>
+										<div class="large-3 small-2 columns">
+											<h:commandLink styleClass="fa fa-fw fa-ban delete" action="#{sharecontroller.deletePublicShare(public_share.id)}" title="#{dictionary.delete_share}">
+												<f:ajax render=":share_media:fleeting_shares"/>
+											</h:commandLink>
+										</div>								
+									</ui:repeat>								
+								</div>		
+								<div class="large-12 columns">
+									<h:commandButton action="#{sharecontroller.generateFleetingShareUrl(mediacontroller.media)}"
+															disabled="#{sharecontroller.getFleetingShares(mediacontroller.media).total &gt;=5}" 
+															value="#{dictionary.generate_media_fleeting_url}" styleClass="button small alert ">
+											<f:ajax render="fleeting_shares"/>								
+									</h:commandButton>
+								</div>		
+							</h:panelGroup>									
+						</div>										
+					</div>		
+					<div class="row">							
+							<div class="large-12 small-12 columns">
+								<hr/>
+								<h5>#{dictionary.private_shares}</h5>								
+								<h:panelGroup id="private_shares">
+									<div class="sep-top">
+										<ui:repeat var="private_share" value="#{sharecontroller.getUserShares(mediacontroller.media).results}">
+											<div class="large-9 small-10 columns">
+												#{private_share.sharedWith.userName} (#{private_share.sharedWith.email})												
+											</div>
+											<div class="large-3 small-2 columns">
+												<h:commandLink styleClass="fa fa-fw fa-ban delete" action="#{sharecontroller.deletePublicShare(private_share.id)}" title="#{dictionary.delete_share}">
+													<f:ajax render=":share_media:private_shares"/>
+												</h:commandLink>
+											</div>																		
+										</ui:repeat>											
+									</div>		
+									<div class="large-12 columns sep-top">
+										<p:autoComplete id="users" multiple="true" value="#{sharecontroller.selectedUsers}" completeMethod="#{authcontroller.completeUser}"
+							                        var="user" itemLabel="#{user.userName}" itemValue="#{user}" converter="userconverter" forceSelection="true" minQueryLength="2">
+							                        <p:column>
+									                	<h:outputText value="#{user.userName}" />
+									            	</p:column>							           
+									            	<p:ajax event="itemSelect" update="add_shares" process="users"/> 
+    											    <p:ajax event="change" update="add_shares" process="users"/>
+    											    <p:ajax event="blur" update="add_shares" process="users"/>  
+							        	</p:autoComplete>															
+									</div>		
+									<div class="large-12 columns sep-top">
+										<h:commandButton action="#{sharecontroller.shareWithUsers(mediacontroller.media)}"																
+																value="#{dictionary.update_private_shares}" styleClass="button small" disabled="#{((sharecontroller.selectedUsers == null) or (sharecontroller.selectedUsers.size() == 0))}"
+																id="add_shares">
+												<f:ajax render="private_shares" execute="users"/>								
+										</h:commandButton>
+									</div>
+								</h:panelGroup>					
+							</div>	
+						</div>						
+				</h:form>
+			</div>
+		</div>
+		<hr/>		
+		<h:link outcome="/me/index.xhtml" styleClass="button" value="#{dictionary.action_back}"/>		
+	</ui:define>
+</ui:composition>

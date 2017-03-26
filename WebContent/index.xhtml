@@ -1,0 +1,30 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" 
+	template="/template/layout.xhtml">
+
+	<ui:define name="head">
+		<h:outputScript library="js" name="spin.js"></h:outputScript>
+	</ui:define>
+
+	<ui:define name="body">
+		<div class="fp_overlay large-8 columns" style="margin-top: 1em">
+			<h1>#{dictionary.fp_header}</h1>
+		</div>
+		<div class="fp_overlay large-9 columns" style="margin-top: 1em">
+			<p>
+				<h:outputText escape="false" value="#{dictionary.fp_welcome_text}"/>
+			</p>
+		</div>	
+		<div class="large-9 columns" style="margin-top: 1em">
+			<h:outputLink value="#{request.contextPath}/me/" rendered="#{!authcontroller.loggedIn}" styleClass="button big left" style="margin:none;">#{dictionary.login_or_register}</h:outputLink> 
+		</div>
+		<div id="fp_media_name"></div>		
+		<div id="background-shares">
+			 <ui:repeat var="share" value="#{sharecontroller.publicShares.results}">
+			 	<div class="lazy" data-source="#{sharecontroller.getPresignedUrl(share.media)}" data-name="#{share.media.name}"/>			 	
+			 </ui:repeat>
+		</div>
+	</ui:define>
+</ui:composition>

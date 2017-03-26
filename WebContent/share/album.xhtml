@@ -1,0 +1,49 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:user="http://java.sun.com/jsf/composite/components/user"
+	xmlns:album="http://java.sun.com/jsf/composite/components/album"
+	xmlns:media="http://java.sun.com/jsf/composite/components/media"
+	xmlns:controller="http://java.sun.com/jsf/composite/components/controller"        
+	xmlns:p="http://primefaces.org/ui"      
+	template="/template/layout.xhtml">
+
+	<f:metadata>		
+		<f:viewParam name="q" value="#{sharecontroller.shareHash}"/>
+		<f:event type="preRenderView" listener="#{sharecontroller.validate}" />
+	</f:metadata>
+
+	<ui:define name="head">			
+	</ui:define>			
+
+	<ui:define name="body">		
+		<div class="row mediapreview">			
+			<div class="large-8 small-12 columns" style="border-right: 1px solid #eee">
+				<h2>#{dictionary.media_view}</h2>
+				
+				<h:form id="album_preview">		
+					<h:outputText value="#{sharecontroller.albumController.album.name}" styleClass="inline"/>
+								 
+					<controller:controller 	request="#{sharecontroller.albumController.albumMediaListRequest}" 
+														model="#{sharecontroller.albumController.albumMediaList}"
+														total="#{sharecontroller.albumController.albumMediaList.total}"
+														update="album_preview"/> 			
+					<div class="medialist">					
+						<h:panelGroup id="medialist">																				
+							<ui:repeat var="media" value="#{sharecontroller.albumController.albumMediaList.results}" varStatus="status">
+								<media:card id="media" 											
+										select="false"
+										viewonly="true"
+										share="#{sharecontroller.shareHash}"
+										media="#{media}"/>
+							</ui:repeat>		
+						</h:panelGroup>
+					</div>
+				</h:form>
+			</div>
+			<div class="large-4 small-12 columns">							
+			</div>
+		</div>
+		<hr/>				
+	</ui:define>
+</ui:composition>

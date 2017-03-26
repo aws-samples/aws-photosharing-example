@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title>#{dictionary.app}</title>
+	<link rel="stylesheet" href="#{request.contextPath}/styles/foundation.css" />
+	<link rel="stylesheet" href="#{request.contextPath}/styles/app.css" />
+	<link rel="stylesheet" href="#{request.contextPath}/styles/spinner.css" />	
+	<ui:insert name="head" />
+</h:head>
+<h:body>	
+	<div data-sticky-container="true">
+		<div data-sticky="true"  data-options="marginTop:0;" style="width:100%">
+			<div class="top-bar" >		
+				<div class="title-bar" data-responsive-toggle="responsive-menu" data-hide-for="medium">
+					<button class="menu-icon" type="button" data-toggle="true"></button>
+		  			<div class="title-bar-title">#{dictionary.app_menu}</div>			
+				</div>				
+				<div id="responsive-menu" >
+					<div class="top-bar-left">
+						<ul class="vertical medium-horizontal menu" data-dropdown-menu="true" style="margin-top: .3em;">											
+							<li data-hide-for="medium"><a href="#{request.contextPath}/">#{dictionary.app_home}</a></li> 							
+							<h:panelGroup rendered="#{authcontroller.loggedIn}">
+								<li>
+									<h:outputLink value="#{request.contextPath}/me" rendered="#{authcontroller.loggedIn}">#{dictionary.portal}</h:outputLink>
+								</li>
+							</h:panelGroup>
+												
+						</ul>
+					</div>
+					<div class="top-bar-right">
+						<ul class="vertical medium-horizontal menu">						
+							<li>
+								<h:form id="auth" style="padding: 0.7rem 1rem;">
+									<h:commandLink action="#{authcontroller.logout}" value="#{dictionary.logout}" rendered="#{authcontroller.loggedIn}" />									
+									<h:outputLink value="#{request.contextPath}/me" rendered="#{!authcontroller.loggedIn}">#{dictionary.login_or_register}</h:outputLink>									
+								</h:form>
+							</li>								
+						</ul>
+					</div>
+				</div>
+			</div>	
+		</div>
+	</div>
+	<div class="content">
+		<div class="row">
+			<div class="columns">
+				<ui:insert name="body" />
+			</div>
+		</div>
+	</div>		
+	<div class="footer">
+	</div>	
+	<script src="#{request.contextPath}/scripts/vendor/what-input.min.js"></script>
+	<script src="#{request.contextPath}/scripts/foundation.min.js"></script>
+	<script src="#{request.contextPath}/scripts/app.js"></script>	
+	<h:outputScript library="primefaces" name="jquery/jquery.js" target="head"/>
+</h:body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"      
+      xmlns:composite="http://java.sun.com/jsf/composite">
+      
+<composite:interface>	
+	<composite:attribute name="controller"/>
+	<composite:attribute name="itemSelectEnabled"/>
+	<composite:attribute name="itemSelectModel"/>
+	<composite:attribute name="groupSelectEnabled"/>
+	<composite:attribute name="groupSelectModel"/>
+	<composite:attribute name="update"/>
+	<composite:attribute name="block"/>
+</composite:interface>
+
+<composite:implementation>
+	<p:menuButton value="#{dictionary.actions}">
+        <p:menuitem value="#{dictionary.add_to_album}" 
+        			disabled="#{cc.attrs.groupSelectModel.getSelectedCount() == 0 or cc.attrs.itemSelectModel.getSelectedCount() == 0 or !cc.attrs.itemSelectEnabled or !cc.attrs.groupSelectEnabled}"
+        			update="#{cc.attrs.update}" 
+        			action="#{mediacontroller.addMediaToAlbum}"
+        			id="media_add_to_album_action"/>               
+        <p:menuitem value="#{dictionary.delete_item}" 
+        			disabled="#{cc.attrs.itemSelectModel.getSelectedCount() == 0 or !cc.attrs.itemSelectEnabled}" 
+        			action="#{mediacontroller.deleteSelectedItems}"
+        			update="#{cc.attrs.update}"
+        			id="media_delete_action">        			
+        </p:menuitem>        				        
+    </p:menuButton>    
+    <p:blockUI block="#{cc.attrs.block}" trigger="media_delete_action" blocked="false" styleClass="blockui default">
+    	<svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+		   <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+		</svg>    	
+    </p:blockUI>        
+</composite:implementation>
+</html>

@@ -1,0 +1,401 @@
+html {
+	font-size: 90%;
+	font-family: sans-serif;
+}
+
+body {
+	font-family: "HelveticaNeueLight", "Helvetica", Helvetica, Arial,
+		sans-serif;
+}
+
+/* application resources */
+.content {
+	padding-top: 6em;
+	min-height: 100%;
+	margin-bottom: -4em;
+	margin-top: -5em;
+	background-size: 100% auto;
+	background-position: 50% 0em;	
+	background-color: white;
+	background-repeat: no-repeat;
+}
+
+.fp_overlay {
+	background: rgba(39, 38, 38, 0.26) none repeat scroll 0% 0%;
+	color: white;
+	text-transform: uppercase;
+}
+
+#fp_media_name {
+	position: absolute;
+	top: 6em;
+	background: rgba(39, 38, 38, 0.26) none repeat scroll 0% 0%;
+	right: 11%;
+	color: white;
+	opacity: .7;
+}
+
+.content:after {
+  content: "";
+  display: block;
+}
+
+.content:after, .footer {
+	min-height: 3em;
+	height: 3em;
+}
+
+.footer {
+	margin-top: 2em;
+	width: 100%;
+	background: rgb(68, 68, 68) none repeat scroll 0% 0%;	
+}
+
+.frame {
+	border: 1px solid #ddd;
+	padding: .5em;
+}
+
+.free {
+	margin-top: 2em;
+	margin-bottom: 2em;
+	box-shadow: 0px 2px 2px #eee;
+}
+
+.top-bar {
+	box-shadow: #5a5a5a 0 1px 3px;
+	min-height: 55px;
+}
+
+.top-bar, .top-bar ul {
+	background-color: #444;
+}
+
+ul.menu li  a {
+	color: white;
+	font-weight: 600;
+}
+
+ul.menu li  a:hover {
+	color: #f8991d !important;
+}
+
+/* zurb foundation updates */
+.row {
+	max-width: 85em;
+}
+
+.button {
+	padding: .7em;
+}
+
+.title-bar {
+	background-color: #444;
+}
+
+hr {
+	max-width: inherit;
+}
+
+.sep-top {
+	margin-top: 1em;
+}
+
+.right {
+	float: right;	
+}
+
+.text-right {
+	text-align: right;
+}
+
+.profile {
+	max-width: 20em;
+}
+
+.profile .image {
+	width: 5em;
+	height: 5em;
+	border: 1px solid #ddd;
+	background-size: auto 100%;
+	border-radius: 5em;
+	position: relative;
+	left: 0em;
+	top: 0em;
+	float: left;
+	margin-right: 1em;
+}
+
+.media.card.new, .album.card.new {
+	height: 8em;
+	width: 8em;
+	border: 1px dashed rgb(221, 221, 221);
+	color: #ddd;
+	transition: .5s ease;
+	float: left;
+	margin: .25em;
+}
+
+img.media.card {
+	border: 1px solid rgb(221, 221, 221);
+	color: #ddd;
+	transition: .5s ease;
+	cursor: pointer;
+}
+
+img.media.card:hover {
+	border: 1px solid #f8991d;
+	cursor: pointer;
+}
+
+.media.card.new:HOVER, .album.card.new:HOVER {
+	color: #f8991d;
+	border: 1px dashed rgb(171, 171, 171);
+	cursor: pointer;
+}
+
+.media.card.new:BEFORE, .album.card.new:BEFORE {
+	content: '+';
+	position: relative;
+	top: -.2em;
+	left: 25%;
+	font-size: 7em;
+}
+
+@supports (-webkit-appearance:none) {
+ .media.card.new:BEFORE, .album.card.new:BEFORE  { 
+ 	top: -5%;  
+ }
+}
+ 
+
+.media.card.selected {
+	color: #f8991d;
+	border: 2px solid #f8991d;
+	cursor: pointer;	
+}
+
+
+.media.card.selected:HOVER {
+	border: 2px dashed #f8991d;
+}
+
+.container {
+	position: relative;
+    margin-bottom: 0.3em;
+}
+
+.container .overlay {
+	position: absolute;
+	width: 100%;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	cursor: pointer;
+	transition: .5s ease;
+}
+
+.container .overlay:HOVER {
+	background: rgb(33, 153, 232) none repeat scroll 0% 0%;
+	opacity: 0.4;
+}
+
+.container .overlay.selected {
+	background: rgb(33, 153, 232) none repeat scroll 0% 0%;
+	opacity: 0.6;
+}
+
+.container .overlay.selected:BEFORE {
+	font: normal normal normal 14px/1 FontAwesome;
+	content: '\f00c';
+	position: relative;
+	font-size: 3em;
+	top: 25%;
+	left: 37%;
+	color: white;
+	font-weight: 100;
+}
+
+.add {
+	position: relative;
+	float: left;
+	min-width: 30em;
+	padding: .5em;
+	width: 85%;
+}
+
+.ui-fileupload-files {
+	font-size: .7em;
+	table-layout: fixed;
+	width: 100%;
+}
+
+.ui-fileupload-content .ui-progressbar {
+	width: 100%;
+}
+
+.ui-fileupload-files tr  td:nth-child(1) {width: 20%;}
+.ui-fileupload-files tr  td:nth-child(2) {width: 35%;}
+.ui-fileupload-files tr  td:nth-child(3) {width: 10%;}
+.ui-fileupload-files tr  td:nth-child(4) {width: 25%;}
+.ui-fileupload-files tr  td:nth-child(5) {width: 10%;}
+
+#media, .medialist {
+	/* Prevent vertical gaps */
+	line-height: 0;
+	-webkit-column-count: 4;
+	-webkit-column-gap: 2px;
+	-moz-column-count: 4;
+	-moz-column-gap: 2px;
+	column-count: 4;
+	column-gap: 0.2em;
+}
+
+
+#albums  .album {
+	width: 24%;
+	height: 7em;
+	overflow: hidden;
+	padding: 1em .5em;
+	border: 1px solid #eee;
+	font-size: 80%;
+	margin-right:2px; 
+	float: left;
+}
+
+.medialist .media, #media .media {
+	/* Just in case there are inline attributes */
+	width: 100% !important;
+	height: auto !important;
+}
+
+@media ( max-width : 1200px) {
+	.medialist, #media, #albums {
+		-moz-column-count: 4;
+		-webkit-column-count: 4;
+		column-count: 4;
+	}
+}
+
+@media ( max-width : 1000px) {
+	.medialist, #media, #albums {
+		-moz-column-count: 4;
+		-webkit-column-count: 4;
+		column-count: 4;
+	}
+}
+
+@media ( max-width : 800px) {
+	.medialist, #media, #albums {
+		-moz-column-count: 3;
+		-webkit-column-count: 3;
+		column-count: 3
+	}
+}
+
+@media ( max-width : 400px) {
+	.medialist, #media, #albums {
+		-moz-column-count: 2;
+		-webkit-column-count: 2;
+		column-count: 2;
+	}
+	.ui-fileupload-files tr  td:nth-child(2) {
+    	display: none;
+ 	}
+}
+
+
+
+.row .controller {
+	border-top: 1px solid rgb(221, 221, 221);
+	border-bottom: 1px solid rgb(221, 221, 221);
+	padding: 0.5em;
+	margin: 1em 0em;
+}
+
+.blockui.default {
+	background: #fff;
+}
+
+.ui-blockui-content {
+	box-shadow: none;
+	background: none;
+	border: none;
+}
+
+.ui-widget {   
+    font-size: .9em;
+}
+
+.ui-inputswitch-on {
+	height: 2em !important;
+}
+
+.selectswitch {
+	float: right;
+}
+
+.selectswitch > div:FIRST-CHILD {
+	float: left;
+	margin: 0.3em;
+}
+
+.mediapreview {
+	
+}
+
+.reveal .row {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+input.inline {
+	box-shadow: none;
+	border-style: none none solid;
+	padding-bottom: 0px;
+}
+
+input.readonly {
+	height: 2em;
+	padding: 0.5em;
+	font-size: 0.8em;	
+}
+
+a.delete {
+	font-size: 1em;
+	padding-top: 0.1em;
+	color: #ec5840;
+	margin-left: 1em;
+}
+
+.ui-autocomplete-input-token,  
+.ui-autocomplete-input-token > input, 
+.ui-autocomplete-input-token > input:focus {
+	border: none;
+	box-shadow: none;
+}
+.ui-autocomplete-token.ui-state-active {
+	background: none;
+}
+
+.ui-autocomplete-input-token > input{ 
+	margin: 0px;
+	padding: 0em;
+	height: 2em;
+	padding-left: .2em;
+}
+
+
+.ui-autocomplete, .ui-autocomplete .ui-autocomplete-multiple-container {
+	width: 100%;
+}
+
+.ui-chkbox .ui-chkbox-box {
+	height: 1.5em;
+	width: 1.5em;
+	margin-top: 2px;
+}
+
+.ui-chkbox .ui-chkbox-box .ui-icon-check {
+	background-position: -63px -144px;
+}

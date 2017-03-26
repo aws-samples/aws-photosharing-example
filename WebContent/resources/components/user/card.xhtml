@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"      
+      xmlns:composite="http://java.sun.com/jsf/composite">
+      
+<composite:interface>
+	<composite:attribute name="user"/>  	
+</composite:interface>
+
+<composite:implementation>
+	<div class="profile card">		
+		<div class="large-12 columns">
+			<div class="image" style="background-image: url(#{cc.attrs.user.profilePictureUrl})"/>
+			<h4><h:outputText value="#{cc.attrs.user.userName}"/></h4>
+			<p>
+				<h:outputFormat value="#{dictionary.date_time_format}">
+					<f:param value="#{cc.attrs.user.lastLogin}"/>					
+				</h:outputFormat>			
+			</p>			
+		</div>	
+	</div>
+	
+</composite:implementation>
+</html>

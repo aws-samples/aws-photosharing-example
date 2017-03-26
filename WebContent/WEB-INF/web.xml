@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	<display-name>Photo Sharing Sample App</display-name>
+	
+	<context-param>
+		<param-name>javax.faces.CONFIG_FILES</param-name>
+		<param-value>
+	    	/WEB-INF/faces-config.xml,
+	    	/WEB-INF/navigation/global-flow.xml	    	
+    	</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>primefaces.UPLOADER</param-name>
+		<param-value>native</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>primefaces.FONT_AWESOME</param-name>
+		<param-value>true</param-value>
+	</context-param>
+			
+	<welcome-file-list>
+		<welcome-file>index.xhtml</welcome-file>
+	</welcome-file-list>
+	<context-param>  
+        <param-name>primefaces.THEME</param-name>  
+        <param-value>omega</param-value>  
+    </context-param>
+
+	<servlet>
+		<servlet-name>Jersey REST Service</servlet-name>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>jersey.config.server.provider.packages</param-name>
+			<param-value>com.amazon.photosharing.rest,com.amazon.photosharing.security.filters</param-value>
+		</init-param>
+		<init-param>
+			<param-name>jersey.config.server.provider.classnames</param-name>
+			<param-value>org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Jersey REST Service</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.xhtml</url-pattern>
+	</servlet-mapping>
+	<context-param>
+		<description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>server</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+		<param-value>resources.application</param-value>
+	</context-param>
+
+	<security-role>
+		<role-name>AUTHENTICATED</role-name>
+	</security-role>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>The Self Portal </web-resource-name>
+			<url-pattern>/me/*</url-pattern>
+			<http-method>POST</http-method>
+			<http-method>GET</http-method>
+		</web-resource-collection>
+		<web-resource-collection>
+			<web-resource-name>Private Media</web-resource-name>
+			<url-pattern>/media/private/*</url-pattern>			
+			<http-method>GET</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>AUTHENTICATED</role-name>
+		</auth-constraint>
+<!-- 		<user-data-constraint> -->
+<!-- 			<transport-guarantee>CONFIDENTIAL</transport-guarantee> -->
+<!-- 		</user-data-constraint> -->
+	</security-constraint>
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<form-login-config>
+			<form-login-page>/auth/login.xhtml</form-login-page>
+			<form-error-page>/auth/login.xhtml</form-error-page>
+		</form-login-config>
+	</login-config>	
+	
+	<error-page>
+		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
+		<location>/auth/login.xhtml</location>		
+	</error-page>
+	
+	<error-page>
+		<error-code>404</error-code>
+		<location>/errorpages/404.html</location>		
+	</error-page>
+
+	<filter>
+		<filter-name>AWSXRayServletFilter</filter-name>
+		<filter-class>com.amazonaws.xray.javax.servlet.AWSXRayServletFilter</filter-class>
+		<init-param>
+			<param-name>fixedName</param-name>
+			<param-value>photosharing</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>AWSXRayServletFilter</filter-name>
+		<url-pattern>*</url-pattern>
+	</filter-mapping>
+</web-app>

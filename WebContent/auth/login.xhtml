@@ -1,0 +1,69 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" template="/template/layout.xhtml">
+
+	<f:metadata>  		
+  		<f:event type="preRenderView" listener="#{authcontroller.updateReferer}"/>
+	</f:metadata>
+
+	<ui:define name="head">
+
+	</ui:define>
+
+	<ui:define name="body">
+		<div class="row">
+			<div class="large-6 large-offset-3 small-12 columns card frame center free">
+				<h4>#{dictionary.login_header}</h4>				
+				<h:form id="login">					
+					<div class="large-12 small-12 columns">
+						<p:inputText value="#{authcontroller.user.userName}" id="username"/>						
+						<p:watermark value="#{dictionary.username}" for="username" />						
+					</div>					
+					<div class="large-12 small-12 columns">
+						<p:password id="password" value="#{authcontroller.user.password}" feedback="false" />
+						<p:watermark value="#{dictionary.password}" for="password" />
+					</div>		
+					<div class="large-12 small-12 columns">	
+						<h:commandButton styleClass="button" action="#{authcontroller.login}" value="#{dictionary.loginAction}" />													
+					</div>
+				</h:form>
+				<hr/>
+				<h4>#{dictionary.or_register_header}</h4>
+				<h:form id="register">
+					<div class="large-12 small-12 columns">
+						<p:inputText value="#{authcontroller.user.userName}" id="register_username"/>						
+						<p:watermark value="#{dictionary.select_username}" for="register_username" />						
+					</div>		
+					<div class="large-12 small-12 columns">
+						<p:inputText value="#{authcontroller.user.email}" id="register_email"/>						
+						<p:watermark value="#{dictionary.enter_email}" for="register_email" />						
+					</div>										
+					<div class="large-12 small-12 columns">
+						<p:password id="register_password" value="#{authcontroller.user.password}" feedback="true" 
+								match="password_repeat" required="true" 
+								label="#{dictionary.password}" 
+								promptLabel="#{dictionary.enter_password}"
+								weakLabel="#{dictionary.weak_password}"
+								goodLabel="#{dictionary.good_password}"
+								strongLabel="#{dictionary.strong_password}"/>
+																					
+						<p:watermark value="#{dictionary.password}" for="register_password" />
+					</div>										
+					<div class="large-12 small-12 columns">
+						<p:password id="password_repeat" value="#{authcontroller.user.password}" feedback="false" required="true" label="#{dictionary.passwordRepeat}" >
+							<f:ajax event="blur"/>																									
+						</p:password>
+						<p:watermark value="#{dictionary.passwordRepeat}" for="password_repeat" />
+					</div>					
+					<div class="large-12 small-12 columns">
+						<p:messages id="messages" showDetail="true" autoUpdate="true" />
+					</div>	
+					<div class="large-12 small-12 columns">						
+						<h:commandButton styleClass="button alert" action="#{authcontroller.register}" value="#{dictionary.registerAction}" />													
+					</div>											
+				</h:form>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
