@@ -28,11 +28,15 @@
 <!-- 	<Resource name="jdbc/PhotoSharingDB2" auth="Container"  factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" -->
 <!-- 		type="javax.sql.DataSource" maxTotal="4" maxIdle="30" maxWaitMillis="10000" -->
 <!-- 		username="root" password="password" driverClassName="com.mysql.jdbc.Driver" testOnBorrow="true" validationQuery="SELECT 1"  -->
-<!-- 		url="jdbc:mysql://photosharing.cpq9gdbohwwc.eu-west-1.rds.amazonaws.com:3306/photosharing" /> -->
+<!-- 		url="jdbc:mysql://<YOUR RDS DNS>:3306/<YOUR RDS SCHEMA>" /> -->
 
 <!-- Online memcached for testing. Only available from EB --> 
 <!-- 	<Manager className="de.javakaffee.web.msm.MemcachedBackupSessionManager" sessionBackupAsync="false" sticky="false" -->
-<!-- 		memcachedNodes="photosharing.oytu1w.cfg.euw1.cache.amazonaws.com:11211" requestUriIgnorePattern=".*\.(ico|png|gif|jpg|css|js)$" /> -->
+<!-- 		memcachedNodes="<YOUR ELASTICACHE MEMCACHED NODE OR CLUSTER CONFIG>:11211" requestUriIgnorePattern=".*\.(ico|png|gif|jpg|css|js)$" /> -->
+
+<!-- 
+	For using auto discovery please provide the elasticache config endpoint ref. http://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/Endpoints.html 	
+-->
 
 	<Resource name="jdbc/PhotoSharingDB2" auth="Container"  factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
 		type="javax.sql.DataSource" maxTotal="4" maxIdle="2" maxWaitMillis="10000" removeAbandoned="true" removeAbandonedTimeout="10" logAbandoned="true"

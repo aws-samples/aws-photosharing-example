@@ -31,7 +31,12 @@ public enum Configuration {
     PRIVATE_MEDIA_URL_FORMAT_THUMB("/private/media/{0}?format=thumb"),
 	SHARE_ALBUM_PUBLIC_URL_FORMAT("/share/album.xhtml?q={0}"),	
 	SHARE_MEDIA_PUBLIC_URL_FORMAT("/share/media.xhtml?q={0}"),
-	ELASTICACHE_CONFIG_ENDPOINT("photosharing.oytu1w.cfg.euw1.cache.amazonaws.com");
+	
+	/*
+	 * Ref. http://docs.aws.amazon.com/AmazonElastiCache/latest/UserGuide/Endpoints.html
+	 */	
+	ELASTICACHE_CONFIG_ENDPOINT("<YOUR ELASTICACHE CONFIG ENDPOINT>"); 
+	
 	
 	private final String value;
 
