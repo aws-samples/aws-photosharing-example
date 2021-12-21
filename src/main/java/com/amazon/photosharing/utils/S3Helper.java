@@ -24,7 +24,7 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.amazon.photosharing.utils.Security.SHA1;
+import static com.amazon.photosharing.utils.Security.SHA256;
 
 public final class S3Helper {
 
@@ -65,7 +65,7 @@ public final class S3Helper {
             else date = _date;
 
             String datePath = FORMATTER.format(date);
-            String sha1File = SHA1(datePath).substring(0, 4);
+            String sha1File = SHA256(datePath).substring(0, 4);
 
             path = MessageFormat.format("{0}-{1}/{2}/{3}", sha1File, datePath, _userName, _fileName);
         }
