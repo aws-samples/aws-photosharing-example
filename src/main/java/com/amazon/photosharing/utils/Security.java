@@ -52,15 +52,15 @@ public class Security {
 	
 	public static String getRandomHash(int p_length) {
 		try {
-			String result = SHA1(new Date().toString()+(int)(Math.random()*Math.pow(10, 6))); 
+			String result = SHA256(new Date().toString()+(int)(Math.random()*Math.pow(10, 6))); 
 			return result.substring(0, p_length<result.length()?p_length:result.length());
 		} catch (NoSuchAlgorithmException e) {
 			return null;
 		}
 	}
 	
-    public static String SHA1(String p_input) throws NoSuchAlgorithmException {
-        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+    public static String SHA256(String p_input) throws NoSuchAlgorithmException {
+        MessageDigest mDigest = MessageDigest.getInstance("SHA256");
         byte[] result = mDigest.digest(p_input.getBytes());
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < result.length; i++) {
